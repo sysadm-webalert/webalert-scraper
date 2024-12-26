@@ -1,0 +1,31 @@
+services:
+  webalert-webscraper-dev:
+    container_name: webalert-webscraper
+    image: webalert:webscraper
+    build:
+      context: .
+    environment:
+      WEBALERT_BACKEND_USER: "application_user"
+      WEBALERT_BACKEND_PASSWORD: "application_user_password"
+      WEBALERT_BACKEND_LOGIN_URL: "http://webalert-backend-dev"
+    networks:
+      - webalert-network
+    profiles: [ dev ]
+
+  webalert-webscraper-prod:
+    container_name: webalert-webscraper
+    image: webalert:webscraper
+    build:
+      context: .
+    environment:
+      WEBALERT-BACKEND-USER: "application_user"
+      WEBALERT-BACKEND-PASSWORD: "application_user_password"
+      WEBALERT-BACKEND-LOGIN-URL: "http://webalert-backend-prod"
+    networks:
+      - webalert-network
+    profiles: [ prod ]
+
+networks:
+  webalert-network:
+    name: webalert-network
+    external: true
