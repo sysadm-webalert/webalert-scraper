@@ -13,9 +13,10 @@ RUN apk add --no-cache \
     freetype \
     harfbuzz \
     nss \
-    ttf-freefont
-
-RUN addgroup -S webalertgroup && adduser -S scraper -G webalertgroup
+    ttf-freefont \
+    && addgroup -S webalertgroup \
+    && adduser -S scraper -G webalertgroup
+    
 WORKDIR /app
 COPY --from=builder /app/webalert-webscraper /app/
 RUN chown -R scraper:webalertgroup /app && chmod +x /app/webalert-webscraper
