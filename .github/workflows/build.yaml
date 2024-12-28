@@ -21,7 +21,7 @@ jobs:
 
     - name: Build the Docker image
       run: |
-        docker build . -t build/webalert-scraper:${{  github.ref_name }} .
+        docker build -t build/webalert-scraper:${{  github.ref_name }} .
 
     - name: Tag the images
       run: |
