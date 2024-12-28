@@ -1,0 +1,34 @@
+name: Docker Build and Push
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build the Docker image
+      run: |
+        docker build . -t build/webalert-scraper:${{  github.ref_name }} .
+
+    - name: Tag the images
+      run: |
+        docker tag build/webalert-scraper:${{ github.ref_name }} vgzsysadm/webalert-scraper:${{ github.ref_name }}
+        docker tag build/webalert-scraper:${{ github.ref_name }} vgzsysadm/webalert-scraper:latest
+  
+    - name: Push the Docker images (tagged and latest)
+      run: |
+        docker push vgzsysadm/webalert-scraper:${{ github.ref_name }}
+        docker push vgzsysadm/webalert-scraper:latest
